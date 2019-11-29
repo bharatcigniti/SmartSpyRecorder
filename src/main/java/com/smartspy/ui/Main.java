@@ -656,7 +656,7 @@ public class Main extends javax.swing.JFrame {
     }
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {
-        Generic.createFolder("C:\\SmartSpy");
+        String fileFolderPath = Generic.choosefolderPath();
         String ObjectType=null;
         String identifier=null;
         List<ViewPageObjectsTable> viewObjects = new ArrayList<ViewPageObjectsTable>();
@@ -673,14 +673,14 @@ public class Main extends javax.swing.JFrame {
 
 //        jsonObj.put(Generic.removeSpecialChars(inputPageName.getText()), objects );
 
-        try (FileWriter file = new FileWriter("C:\\SmartSpy\\"+Generic.removeSpecialChars(inputPageName.getText())+"_"+Generic.getDate()+"_"+Generic.getTime()+".json")) {
+        try (FileWriter file = new FileWriter(fileFolderPath+File.separator+Generic.removeSpecialChars(inputPageName.getText())+"_"+Generic.getDate()+"_"+Generic.getTime()+".json")) {
             file.write(objects.toJSONString());
         } catch (IOException e) {
             e.printStackTrace();
         }
 
 
-        JOptionPane.showMessageDialog(null, "Successfully Saved , File Path::"+"C:\\SmartSpy\\"+Generic.removeSpecialChars(inputPageName.getText())+".json", "SmartSpy" , JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null, "Successfully Saved , File Path::"+fileFolderPath+File.separator+Generic.removeSpecialChars(inputPageName.getText())+"_"+Generic.getDate()+"_"+Generic.getTime()+".json", "SmartSpy" , JOptionPane.INFORMATION_MESSAGE);
 //        System.out.println(jsonObj);
     }
 
