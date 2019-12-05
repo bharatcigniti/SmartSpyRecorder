@@ -5,6 +5,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import sun.plugin2.util.SystemUtil;
 
 import javax.swing.*;
 import java.util.*;
@@ -629,48 +630,60 @@ public class DomExtractor {
         //Elements input_buttons = document.getElementsByTag("input");
         objvalue=null;
         for (Element input_button : input_buttons) {
+            String getTextValue[] = getTextValue(input_button).split("###");
+            System.out.println(">>>>>>>>>>>>>>>>>>>>>"+getTextValue(input_button));
+            String tagName=input_button.tagName();
             if (input_button.attr("type").equalsIgnoreCase("submit")) {
                 text = input_button.text();
+                if (StringUtils.isEmpty(text)){
+                    text = input_button.attr("value");
+
+                    System.out.println("tagName:: "+text);
+                }
+
                 text_remove=Generic.removeSpecialChars(text);
-                if (!StringUtils.isEmpty(text) || !StringUtils.isEmpty(text_remove)) {
+                System.out.println("text_remove:: "+text_remove);
+                //if (!StringUtils.isEmpty(text) || !StringUtils.isEmpty(text_remove)) {
 //                    id = input_button.attr("id");
 //                    if (!StringUtils.isEmpty(id)) {
 //                        objvalue=id;
 ////                        id = "\"" + id + "\"";
 //                        findby = "id = " + id ;
 //                    } else {
-                        linkInnerH = input_button.html();
-                        if (linkInnerH.contains("<")) {
-                            Document innerdoc = Jsoup.parse(linkInnerH);
-                            Elements innerelements = innerdoc.getAllElements();
-                            for (Element innerele : innerelements) {
-                                listStrings.add(innerele.tag().getName());
-                            }
-                            innerxpath = listStrings.get(4);
-                            for (int i = 5; i <= listStrings.size() - 1; i++) {
-                                innerxpath = innerxpath + "/" + listStrings.get(i);
-                            }
-                            listStrings.clear();
-
-                        }
+//                        linkInnerH = input_button.html();
+//                        if (linkInnerH.contains("<")) {
+//                            Document innerdoc = Jsoup.parse(linkInnerH);
+//                            Elements innerelements = innerdoc.getAllElements();
+//                            for (Element innerele : innerelements) {
+//                                listStrings.add(innerele.tag().getName());
+//                            }
+//                            innerxpath = listStrings.get(4);
+//                            for (int i = 5; i <= listStrings.size() - 1; i++) {
+//                                innerxpath = innerxpath + "/" + listStrings.get(i);
+//                            }
+//                            listStrings.clear();
+//
+//                        }
 
                         if (text.contains("'")) {
                             textArr = text.split("'");
-                            if (innerxpath != null) {
-                                xpath = getParentelements(input_button) + "button/" + innerxpath + "[contains(text(),'" + textArr[0] + "')]";
-                            } else {
-                                //xpath = "//a[text()=" + text + "]";
-                                xpath = getParentelements(input_button) + "button[text()=" + text + "]";
-                            }
+//                            if (innerxpath != null) {
+//                                xpath = getParentelements(input_button) + tagName+"/" + innerxpath + "[contains(text(),'" + textArr[0] + "')]";
+//                            } else {
+//                                //xpath = "//a[text()=" + text + "]";
+//                                xpath = getParentelements(input_button) + tagName+"[contains(text(),'" + textArr[0] + "')]";
+//                            }
+                            xpath = getParentelements(input_button) + tagName+"[contains(text(),'" + textArr[0] + "')]";
                         } else {
-                            text = "'" + text + "'";
+                            text = "'" + getTextValue[0] + "'";
 
-                            if (innerxpath != null) {
-                                xpath = getParentelements(input_button) + "button/" + innerxpath + "[text()=" + text + "]";
-                            } else {
-                                //xpath = "//a[text()=" + text + "]";
-                                xpath = getParentelements(input_button) + "button[text()=" + text + "]";
-                            }
+//                            if (innerxpath != null) {
+//                                xpath = getParentelements(input_button) + tagName+"/" + innerxpath + "[text()=" + text + "]";
+//                            } else {
+//                                //xpath = "//a[text()=" + text + "]";
+//                                xpath = getParentelements(input_button) + tagName+"[text()=" + text + "]";
+//                            }
+                            xpath = getParentelements(input_button) + tagName+"["+getTextValue[1]+"=" + text + "]";
                         }
                         objvalue=xpath;
 //                        xpath = "\"" + xpath + "\"";
@@ -708,7 +721,7 @@ public class DomExtractor {
                         }
 
                     }
-                }
+             //   }
             }
         }
         objvalue=null;
@@ -784,7 +797,17 @@ public class DomExtractor {
         all_buttons = stringBuilder.toString();
     }
 
-
+    public static String getTextValue(Element element){
+        String returnStatus=null;
+        String getText = element.text();
+        if(StringUtils.isEmpty(getText)){
+            String getVale = element.attr("value");
+            returnStatus = getVale+"###@value";
+        } else{
+            returnStatus = getText+"###text()";
+        }
+        return returnStatus;
+    }
     public void getCheckbox(Elements input_Checkboxes){
         String[] textArr=null;
         int m=1;

@@ -10,6 +10,9 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import sun.security.krb5.internal.crypto.Des;
 
+import javax.script.Invocable;
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -17,10 +20,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.sql.Driver;
 import java.util.*;
 import java.util.List;
@@ -77,6 +77,7 @@ public class Main extends javax.swing.JFrame {
         chkRadioButton = new javax.swing.JCheckBox();
         chkComboBox = new javax.swing.JCheckBox();
         chkCheckBox = new javax.swing.JCheckBox();
+        chkText = new javax.swing.JCheckBox();
         chkSelectAll = new javax.swing.JCheckBox();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblPageObjects = new javax.swing.JTable();
@@ -237,6 +238,9 @@ public class Main extends javax.swing.JFrame {
         chkSelectAll.setText("Select All");
         chkSelectAll.addActionListener(actionListener);
 
+        chkText.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        chkText.setText("Text (Headers)");
+
         javax.swing.GroupLayout pnlPageObjectsLayout = new javax.swing.GroupLayout(pnlPageObjects);
         pnlPageObjects.setLayout(pnlPageObjectsLayout);
         pnlPageObjectsLayout.setHorizontalGroup(
@@ -254,7 +258,9 @@ public class Main extends javax.swing.JFrame {
                                 .addComponent(chkComboBox)
                                 .addGap(18, 18, 18)
                                 .addComponent(chkCheckBox)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 183, Short.MAX_VALUE)
+                                .addGap(18, 18, 18)
+                                .addComponent(chkText)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(chkSelectAll)
                                 .addGap(22, 22, 22))
         );
@@ -267,7 +273,8 @@ public class Main extends javax.swing.JFrame {
                                                 .addComponent(chkRadioButton)
                                                 .addComponent(chkComboBox)
                                                 .addComponent(chkCheckBox)
-                                                .addComponent(chkSelectAll))
+                                                .addComponent(chkSelectAll)
+                                                .addComponent(chkText))
                                         .addGroup(pnlPageObjectsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                                 .addComponent(chkLink)
                                                 .addComponent(chkButton)
@@ -580,21 +587,57 @@ public class Main extends javax.swing.JFrame {
         Drivers.stop();
     }
 
+    public void executeJavaScript(){
+        try {
+            ScriptEngineManager manager = new ScriptEngineManager();
+            ScriptEngine engine = manager.getEngineByName("JavaScript");
+            System.out.println("okay1");
+            FileInputStream fileInputStream = new FileInputStream("C:/Users/Kushan/eclipse-workspace/sureson.lk/src/main/webapp/js/back_end_response.js");
+            System.out.println("okay2");
+            if (fileInputStream != null){
+                BufferedReader reader = new BufferedReader(new InputStreamReader(fileInputStream));
+                engine.eval(reader);
+                System.out.println("okay3");
+                // Invocable javascriptEngine = null;
+                System.out.println("okay4");
+                Invocable invocableEngine = (Invocable)engine;
+                System.out.println("okay5");
+                int x=0;
+                System.out.println("invocableEngine is : "+invocableEngine);
+                Object object = invocableEngine.invokeFunction("backend_message",x);
+
+                System.out.println("okay6");
+            }
+        }catch(Exception e) {
+            System.out.println("erroe when calling js function"+ e);
+        }
+    }
     private void btnFindElementActionPerformed(java.awt.event.ActionEvent evt) {
-        this.setState(Frame.ICONIFIED);
-        WebElement element=null;
-       JavascriptExecutor js=((JavascriptExecutor) Constants.driver);
+//        JavascriptExecutor js=((JavascriptExecutor) Constants.driver);
+//        String str = js.executeScript("window.selection.createRange().parentElement();");
+        System.out.println(selected_table_row_objPath+":selected_table_row_objPath");
+        if(selected_table_row_objPath!=null) {
 
-        System.out.println(selected_table_row_objPath);
-       if(selected_table_row_identifier.contains("id")){
-           element=Constants.driver.findElement(By.id(selected_table_row_objPath.trim()));
-       } else  if(selected_table_row_identifier.contains("name")){
-            element=Constants.driver.findElement(By.name(selected_table_row_objPath.trim()));
-        } else {
-          element=Constants.driver.findElement(By.xpath(selected_table_row_objPath.trim()));
-       }
+            this.setState(Frame.ICONIFIED);
+            WebElement element = null;
+            JavascriptExecutor js = ((JavascriptExecutor) Constants.driver);
 
-       js.executeScript("arguments[0].setAttribute('style', 'background: yellow; border: 5px solid red;');", element);
+            if (selected_table_row_identifier.contains("id")) {
+                element = Constants.driver.findElement(By.id(selected_table_row_objPath.trim()));
+            } else if (selected_table_row_identifier.contains("name")) {
+                element = Constants.driver.findElement(By.name(selected_table_row_objPath.trim()));
+            } else {
+                element = Constants.driver.findElement(By.xpath(selected_table_row_objPath.trim()));
+            }
+            //js.executeScript("arguments[0].setAttribute('style', 'background: yellow; border: 5px solid red;');", element);
+            if (element.isDisplayed()) {
+                js.executeScript("arguments[0].setAttribute('style', 'border: 5px solid red;');", element);
+            } else {
+                JOptionPane.showMessageDialog(null, selected_table_row_objName + ":: is Exists but not displayed in " + Constants.driver.getTitle() + " Page", "Warning.. ", JOptionPane.INFORMATION_MESSAGE);
+            }
+        } else{
+            JOptionPane.showMessageDialog(null, "Element is not Selected from table ", "Warning.. ", JOptionPane.INFORMATION_MESSAGE);
+        }
 
     }
 
@@ -623,12 +666,16 @@ public class Main extends javax.swing.JFrame {
         if (chkComboBox.isSelected()) {
             objList.add("ComboBox");
         }
+        if(chkText.isSelected()){
+            objList.add("Text");
+        }
         JavascriptExecutor js=((JavascriptExecutor) Constants.driver);
         String pageSource = js.executeScript("return document.documentElement.outerHTML").toString();
         Constants.pageObjectsHashMap.clear();
         DomExtractor domExtractor = new DomExtractor();
+        DomExtractor3 domExtractor3 = new DomExtractor3();
         System.out.println(objList);
-        domExtractor.smartExtractor(pageSource, objList);
+        domExtractor3.smartExtractor(pageSource, objList);
 //        System.out.println(Constants.all_operations);
 
         Design.table_dimenetions(tblPageObjects);
@@ -753,11 +800,11 @@ public class Main extends javax.swing.JFrame {
                 ObjectType = "List";
             }
 
-//            System.out.println("value::"+entry.getValue());
-//
-//            System.out.println("args1::"+args[1]);
 
-            ViewPageObjectsTable viewFileTable = new ViewPageObjectsTable(i, entry.getKey(), ObjectType,identifier,args[1].trim());
+
+            ViewPageObjectsTable  viewFileTable = new ViewPageObjectsTable(i, entry.getKey(), ObjectType,identifier,args[1].trim());
+
+
 
 
             viewObjects.add(viewFileTable);
@@ -858,6 +905,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JCheckBox chkLink;
     private javax.swing.JCheckBox chkComboBox;
     private javax.swing.JCheckBox chkRadioButton;
+    private javax.swing.JCheckBox chkText;
     private javax.swing.JCheckBox chkSelectAll;
     private javax.swing.JRadioButton rbIE11;
     private javax.swing.JTextField inputPageName;
