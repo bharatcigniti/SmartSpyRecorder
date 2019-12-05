@@ -13,7 +13,7 @@ import java.io.File;
 import java.util.concurrent.TimeUnit;
 
 public class Drivers {
-    private static final int PAGE_TIME_OUT = 30;
+    private static final int PAGE_TIME_OUT = 10;
     static WebDriver driver =null;
     static JavascriptExecutor js=null;
 

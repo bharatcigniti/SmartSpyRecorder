@@ -5,6 +5,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.openqa.selenium.By;
 
 import javax.swing.*;
 import java.util.*;
@@ -139,18 +140,20 @@ public class DomExtractor3 {
 
 
                     if (!StringUtils.isEmpty(xpath)) {
-                        if(Constants.textHashMap.containsKey(txttvarName)){
-                            iterator = iterator + 1;
-                            Constants.pageObjectsHashMap.put(txttvarName+"_duplicate"+iterator, findby);
-                            Constants.textHashMap.put(txttvarName+"_duplicate"+iterator, findby);
+                        //if (Constants.driver.findElement(By.xpath(xpath)).isDisplayed()) {
+                            if (Constants.textHashMap.containsKey(txttvarName)) {
+                                iterator = iterator + 1;
+                                Constants.pageObjectsHashMap.put(txttvarName + "_duplicate" + iterator, findby);
+                                Constants.textHashMap.put(txttvarName + "_duplicate" + iterator, findby);
 
-                        } else{
-                            Constants.pageObjectsHashMap.put(txttvarName, findby);
-                            Constants.textHashMap.put(txttvarName, findby);
+                            } else {
+                                Constants.pageObjectsHashMap.put(txttvarName, findby);
+                                Constants.textHashMap.put(txttvarName, findby);
 
+                            }
+                            nullvars();
                         }
-                        nullvars();
-                    }
+                    //}
 
                 }
             }
@@ -180,17 +183,19 @@ public class DomExtractor3 {
 
 
                     if (!StringUtils.isEmpty(xpath)) {
-                        if(Constants.listHashMap.containsKey(listvarName)){
-                            iterator = iterator + 1;
-                            Constants.pageObjectsHashMap.put(listvarName+"_duplicate"+iterator, findby);
-                            Constants.listHashMap.put(listvarName+"_duplicate"+iterator, findby);
+                        //if (Constants.driver.findElement(By.xpath(xpath)).isDisplayed()) {
+                            if (Constants.listHashMap.containsKey(listvarName)) {
+                                iterator = iterator + 1;
+                                Constants.pageObjectsHashMap.put(listvarName + "_duplicate" + iterator, findby);
+                                Constants.listHashMap.put(listvarName + "_duplicate" + iterator, findby);
 
-                        } else{
-                            Constants.pageObjectsHashMap.put(listvarName, findby);
-                            Constants.listHashMap.put(listvarName, findby);
+                            } else {
+                                Constants.pageObjectsHashMap.put(listvarName, findby);
+                                Constants.listHashMap.put(listvarName, findby);
 
-                        }
-                        nullvars();
+                            }
+                            nullvars();
+                      //  }
                     }
 
                 }
@@ -220,17 +225,19 @@ public class DomExtractor3 {
 
 
                 if (!StringUtils.isEmpty(xpath)) {
-                    if(Constants.radioboxHashMap.containsKey(radioboxvarName)){
-                        iterator = iterator + 1;
-                        Constants.pageObjectsHashMap.put(radioboxvarName+"_duplicate"+iterator, findby);
-                        Constants.radioboxHashMap.put(radioboxvarName+"_duplicate"+iterator, findby);
+                    //if (Constants.driver.findElement(By.xpath(xpath)).isDisplayed()) {
+                        if (Constants.radioboxHashMap.containsKey(radioboxvarName)) {
+                            iterator = iterator + 1;
+                            Constants.pageObjectsHashMap.put(radioboxvarName + "_duplicate" + iterator, findby);
+                            Constants.radioboxHashMap.put(radioboxvarName + "_duplicate" + iterator, findby);
 
-                    } else{
-                        Constants.pageObjectsHashMap.put(radioboxvarName, findby);
-                        Constants.radioboxHashMap.put(radioboxvarName, findby);
+                        } else {
+                            Constants.pageObjectsHashMap.put(radioboxvarName, findby);
+                            Constants.radioboxHashMap.put(radioboxvarName, findby);
 
-                    }
-                    nullvars();
+                        }
+                        nullvars();
+                   // }
                 }
             }
         }
@@ -256,17 +263,19 @@ public class DomExtractor3 {
 
 
                 if (!StringUtils.isEmpty(xpath)) {
-                    if(Constants.checkboxHashMap.containsKey(btnvarName)){
-                        iterator = iterator + 1;
-                        Constants.pageObjectsHashMap.put(btnvarName+"_duplicate"+iterator, findby);
-                        Constants.checkboxHashMap.put(btnvarName+"_duplicate"+iterator, findby);
+                 //   if (Constants.driver.findElement(By.xpath(xpath)).isDisplayed()) {
+                        if (Constants.checkboxHashMap.containsKey(btnvarName)) {
+                            iterator = iterator + 1;
+                            Constants.pageObjectsHashMap.put(btnvarName + "_duplicate" + iterator, findby);
+                            Constants.checkboxHashMap.put(btnvarName + "_duplicate" + iterator, findby);
 
-                    } else{
-                        Constants.pageObjectsHashMap.put(btnvarName, findby);
-                        Constants.checkboxHashMap.put(btnvarName, findby);
+                        } else {
+                            Constants.pageObjectsHashMap.put(btnvarName, findby);
+                            Constants.checkboxHashMap.put(btnvarName, findby);
 
-                    }
-                    nullvars();
+                        }
+                        nullvars();
+                  //  }
                 }
             }
         }
@@ -298,19 +307,20 @@ public class DomExtractor3 {
                     lnkvarName = "lnk_" + Generic.removeSpecialChars(getText);
 
                     if (!StringUtils.isEmpty(xpath)) {
-                        if(Constants.linkHashMap.containsKey(lnkvarName)){
-                            iterator = iterator + 1;
-                            Constants.pageObjectsHashMap.put(lnkvarName+"_duplicate"+iterator, findby);
-                            Constants.linkHashMap.put(lnkvarName+"_duplicate"+iterator, findby);
+                      //  if (Constants.driver.findElement(By.xpath(xpath)).isDisplayed()) {
+                            if (Constants.linkHashMap.containsKey(lnkvarName)) {
+                                iterator = iterator + 1;
+                                Constants.pageObjectsHashMap.put(lnkvarName + "_duplicate" + iterator, findby);
+                                Constants.linkHashMap.put(lnkvarName + "_duplicate" + iterator, findby);
 
-                        } else{
-                            Constants.pageObjectsHashMap.put(lnkvarName, findby);
-                            Constants.linkHashMap.put(lnkvarName, findby);
+                            } else {
+                                Constants.pageObjectsHashMap.put(lnkvarName, findby);
+                                Constants.linkHashMap.put(lnkvarName, findby);
 
-                        }
-                        nullvars();
+                            }
+                            nullvars();
+                      //  }
                     }
-
                 }
             }
 
@@ -348,17 +358,19 @@ public class DomExtractor3 {
 
 
                     if (!StringUtils.isEmpty(xpath)) {
-                        if(Constants.buttonsHashMap.containsKey(btnvarName)){
-                            iterator = iterator + 1;
-                            Constants.pageObjectsHashMap.put(btnvarName+"_duplicate"+iterator, findby);
-                            Constants.buttonsHashMap.put(btnvarName+"_duplicate"+iterator, findby);
+                       // if (Constants.driver.findElement(By.xpath(xpath)).isDisplayed()) {
+                            if (Constants.buttonsHashMap.containsKey(btnvarName)) {
+                                iterator = iterator + 1;
+                                Constants.pageObjectsHashMap.put(btnvarName + "_duplicate" + iterator, findby);
+                                Constants.buttonsHashMap.put(btnvarName + "_duplicate" + iterator, findby);
 
-                        } else{
-                            Constants.pageObjectsHashMap.put(btnvarName, findby);
-                            Constants.buttonsHashMap.put(btnvarName, findby);
+                            } else {
+                                Constants.pageObjectsHashMap.put(btnvarName, findby);
+                                Constants.buttonsHashMap.put(btnvarName, findby);
 
-                        }
-                        nullvars();
+                            }
+                            nullvars();
+                      //  }
                     }
 
                 }
@@ -388,17 +400,19 @@ public class DomExtractor3 {
 
 
                 if (!StringUtils.isEmpty(xpath)) {
-                    if(Constants.buttonsHashMap.containsKey(btnvarName)){
-                        iterator = iterator + 1;
-                        Constants.pageObjectsHashMap.put(btnvarName+"_duplicate"+iterator, findby);
-                        Constants.buttonsHashMap.put(btnvarName+"_duplicate"+iterator, findby);
+                   // if (Constants.driver.findElement(By.xpath(xpath)).isDisplayed()) {
+                        if (Constants.buttonsHashMap.containsKey(btnvarName)) {
+                            iterator = iterator + 1;
+                            Constants.pageObjectsHashMap.put(btnvarName + "_duplicate" + iterator, findby);
+                            Constants.buttonsHashMap.put(btnvarName + "_duplicate" + iterator, findby);
 
-                    } else{
-                        Constants.pageObjectsHashMap.put(btnvarName, findby);
-                        Constants.buttonsHashMap.put(btnvarName, findby);
+                        } else {
+                            Constants.pageObjectsHashMap.put(btnvarName, findby);
+                            Constants.buttonsHashMap.put(btnvarName, findby);
 
-                    }
-                    nullvars();
+                        }
+                        nullvars();
+                    //}
                 }
             }
         }
@@ -426,18 +440,20 @@ public class DomExtractor3 {
 
 
                 if (!StringUtils.isEmpty(xpath)) {
-                    if(Constants.buttonsHashMap.containsKey(btnvarName)){
-                        iterator = iterator + 1;
-                        Constants.pageObjectsHashMap.put(btnvarName+"_duplicate"+iterator, findby);
-                        Constants.buttonsHashMap.put(btnvarName+"_duplicate"+iterator, findby);
+                    //if (Constants.driver.findElement(By.xpath(xpath)).isDisplayed()) {
+                        if (Constants.buttonsHashMap.containsKey(btnvarName)) {
+                            iterator = iterator + 1;
+                            Constants.pageObjectsHashMap.put(btnvarName + "_duplicate" + iterator, findby);
+                            Constants.buttonsHashMap.put(btnvarName + "_duplicate" + iterator, findby);
 
-                    } else{
-                        Constants.pageObjectsHashMap.put(btnvarName, findby);
-                        Constants.buttonsHashMap.put(btnvarName, findby);
+                        } else {
+                            Constants.pageObjectsHashMap.put(btnvarName, findby);
+                            Constants.buttonsHashMap.put(btnvarName, findby);
 
+                        }
+                        nullvars();
                     }
-                    nullvars();
-                }
+                //}
             }
         }
     }
@@ -464,18 +480,20 @@ public class DomExtractor3 {
                 inputvarName = "input_" + Generic.removeSpecialChars(getName);
 
                 if (!StringUtils.isEmpty(xpath)) {
-                    if(Constants.inputHashMap.containsKey(inputvarName)){
-                        iterator = iterator + 1;
-                        Constants.pageObjectsHashMap.put(inputvarName+"_duplicate"+iterator, findby);
-                        Constants.inputHashMap.put(inputvarName+"_duplicate"+iterator, findby);
+                    //if (Constants.driver.findElement(By.xpath(xpath)).isDisplayed()) {
+                        if (Constants.inputHashMap.containsKey(inputvarName)) {
+                            iterator = iterator + 1;
+                            Constants.pageObjectsHashMap.put(inputvarName + "_duplicate" + iterator, findby);
+                            Constants.inputHashMap.put(inputvarName + "_duplicate" + iterator, findby);
 
-                    } else{
-                        Constants.pageObjectsHashMap.put(inputvarName, findby);
-                        Constants.inputHashMap.put(inputvarName, findby);
+                        } else {
+                            Constants.pageObjectsHashMap.put(inputvarName, findby);
+                            Constants.inputHashMap.put(inputvarName, findby);
 
+                        }
+                        nullvars();
                     }
-                    nullvars();
-                }
+                //}
             }
         }
     }

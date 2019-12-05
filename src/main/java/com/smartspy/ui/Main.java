@@ -16,6 +16,7 @@ import javax.script.ScriptEngineManager;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 import java.awt.*;
@@ -587,40 +588,14 @@ public class Main extends javax.swing.JFrame {
         Drivers.stop();
     }
 
-    public void executeJavaScript(){
-        try {
-            ScriptEngineManager manager = new ScriptEngineManager();
-            ScriptEngine engine = manager.getEngineByName("JavaScript");
-            System.out.println("okay1");
-            FileInputStream fileInputStream = new FileInputStream("C:/Users/Kushan/eclipse-workspace/sureson.lk/src/main/webapp/js/back_end_response.js");
-            System.out.println("okay2");
-            if (fileInputStream != null){
-                BufferedReader reader = new BufferedReader(new InputStreamReader(fileInputStream));
-                engine.eval(reader);
-                System.out.println("okay3");
-                // Invocable javascriptEngine = null;
-                System.out.println("okay4");
-                Invocable invocableEngine = (Invocable)engine;
-                System.out.println("okay5");
-                int x=0;
-                System.out.println("invocableEngine is : "+invocableEngine);
-                Object object = invocableEngine.invokeFunction("backend_message",x);
 
-                System.out.println("okay6");
-            }
-        }catch(Exception e) {
-            System.out.println("erroe when calling js function"+ e);
-        }
-    }
     private void btnFindElementActionPerformed(java.awt.event.ActionEvent evt) {
 //        JavascriptExecutor js=((JavascriptExecutor) Constants.driver);
 //        String str = js.executeScript("window.selection.createRange().parentElement();");
-        System.out.println(selected_table_row_objPath+":selected_table_row_objPath");
+        WebElement element = null;
+        JavascriptExecutor js = ((JavascriptExecutor) Constants.driver);
         if(selected_table_row_objPath!=null) {
-
             this.setState(Frame.ICONIFIED);
-            WebElement element = null;
-            JavascriptExecutor js = ((JavascriptExecutor) Constants.driver);
 
             if (selected_table_row_identifier.contains("id")) {
                 element = Constants.driver.findElement(By.id(selected_table_row_objPath.trim()));
@@ -629,14 +604,35 @@ public class Main extends javax.swing.JFrame {
             } else {
                 element = Constants.driver.findElement(By.xpath(selected_table_row_objPath.trim()));
             }
-            //js.executeScript("arguments[0].setAttribute('style', 'background: yellow; border: 5px solid red;');", element);
+            js.executeScript("arguments[0].setAttribute('style', 'background: yellow; border: 5px solid red;');", element);
             if (element.isDisplayed()) {
                 js.executeScript("arguments[0].setAttribute('style', 'border: 5px solid red;');", element);
             } else {
                 JOptionPane.showMessageDialog(null, selected_table_row_objName + ":: is Exists but not displayed in " + Constants.driver.getTitle() + " Page", "Warning.. ", JOptionPane.INFORMATION_MESSAGE);
             }
+//            js.executeScript("arguments[0].setAttribute('style', 'border: 5px solid red;');", element);
         } else{
-            JOptionPane.showMessageDialog(null, "Element is not Selected from table ", "Warning.. ", JOptionPane.INFORMATION_MESSAGE);
+            //JOptionPane.showMessageDialog(null, "Element is not Selected from table ", "Warning.. ", JOptionPane.INFORMATION_MESSAGE);
+            System.out.println("rows:::"+viewPageObjectsTableModel.getRowCount());
+            int rowClount = viewPageObjectsTableModel.getRowCount();
+            String xpath = null;
+            for(int k = 0;k<=rowClount-1;k++){
+                xpath = (String) tblPageObjects.getModel().getValueAt(k, 4);
+                System.out.println("xpath:: "+xpath);
+
+                Boolean isPresent = Constants.driver.findElements(By.xpath(xpath)).size() > 0;
+                try {
+                    if (isPresent) {
+                        element = Constants.driver.findElement(By.xpath(xpath));
+                        js.executeScript("arguments[0].setAttribute('style', 'border: 5px solid red;');", element);
+                        //viewPageObjectsTableModel.setRowColour(k, Color.GREEN);
+
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+
+            }
         }
 
     }
@@ -857,6 +853,7 @@ public class Main extends javax.swing.JFrame {
           //  Constants.TABLE_SELECTED = selected_table_row;
 
             tblPageObjects.setSelectionBackground(Color.ORANGE);
+
             //  txtProjectName.setText(selected_TestScript.toUpperCase());
 
         }

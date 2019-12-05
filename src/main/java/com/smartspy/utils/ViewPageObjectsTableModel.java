@@ -3,6 +3,8 @@ package com.smartspy.utils;
 import org.springframework.expression.spel.ast.Identifier;
 
 import javax.swing.table.AbstractTableModel;
+import java.awt.*;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -10,7 +12,7 @@ import java.util.List;
  * @author Bharath Kumar Reddy Vatrapu
  */
 
-public class ViewPageObjectsTableModel extends AbstractTableModel {
+public class ViewPageObjectsTableModel  extends AbstractTableModel {
     private final List<ViewPageObjectsTable> viewPageObjectsTables;
 
     private final String[] columnNames = new String[] {
@@ -69,5 +71,15 @@ public class ViewPageObjectsTableModel extends AbstractTableModel {
             return row.getDescription();
         }
         return null;
+    }
+
+    List<Color> rowColours = Arrays.asList(
+            Color.RED,
+            Color.GREEN,
+            Color.CYAN
+    );
+    public void setRowColour(int row, Color c) {
+        rowColours.set(row, c);
+        fireTableRowsUpdated(row, row);
     }
 }
